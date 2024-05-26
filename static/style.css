@@ -1,0 +1,110 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1em;
+}
+#logo {
+    min-width: 300px;
+    width: 25vw;
+}
+
+#auth-sect {
+    display: flex;
+    column-gap: 1em;
+}
+
+#auth-warn, #signup-info {
+    margin: 0;
+}
+
+#auth-warn {
+    color: red;
+}
+
+#signup-info {
+    margin: 0;
+}
+
+#search-form, #signup-form, #login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: .25em;
+}
+
+#search-input {
+    min-width: 300px;
+    width: 25vw;
+}
+
+#search-button {
+    min-width: 100px;
+    width: 5vw;
+}
+
+#welcome-text {
+    margin: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.grid-item img {
+    width: 100px;
+    height: 150px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+.book-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.button-container {
+    align-self: flex-end;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.star-rating {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+}
+
+.star-rating li {
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.star-rating i.fas {
+    color: gold;
+}
+
+.star-rating i.far {
+    color: #ddd;
+}
+
+#book-author, #book-year {
+    margin: 0;
+    margin-bottom: .25em;
+}

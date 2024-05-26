@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="signup" method="post" id="signup-form">
+        <h4>Fill out the following fields and press sign-up to create an account</h4>
+        {{ form.username.label }} {{ form.username(size=20) }}
+        {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{ form.password.label }} {{ form.password(size=20) }}
+        {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{ form.confirm.label }} {{ form.confirm(size=20) }}
+        {% for error in form.confirm.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <input type="submit" value="Sign Up">
+    </form>
+    <h4 id="signup-info">Already have an account? <a href="/auth">log-in</a> now</h4>
+{% endblock %}

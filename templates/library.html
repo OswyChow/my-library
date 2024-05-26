@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="library grid">
+    {% for user_book in user_books %}
+        <div class="book">
+            <img src="{{ user_book.book.image_url }}" alt="{{ user_book.book.title }}">
+            <h2>{{ user_book.book.title }}</h2>
+            <p><strong>Author:</strong> {{ user_book.book.author }}</p>
+            <p><strong>Year:</strong> {{ user_book.book.year }}</p>
+            <p><strong>Status:</strong> {{ user_book.status }}</p>
+            <ul class="star-rating" data-book-id="{{ user_book.book.id }}" data-rating="{{ user_book.rating }}">
+                {% for i in range(1, 11) %}
+                    <li>
+                        {% if i <= user_book.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <form action="{{ url_for('update_status', book_id=user_book.book.id) }}" method="post">
+                <select name="status">
+                    <option value="Unread">Unread</option>
+                    <option value="Reading">Reading</option>
+                    <option value="Read">Read</option>
+                </select>
+                <button type="submit">Update status</button>
+            </form>
+
+            <form action="{{ url_for('delete_book', book_id=user_book.book.id) }}" method="post">
+                <button type="submit">Delete book</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        function updateStarRatingDisplay(ratingEl, rating) {
+            Array.from(ratingEl.children).forEach((starEl, i) => {
+                if (starEl.firstElementChild) {
+                    if (i < rating) {
+                        starEl.firstElementChild.classList.remove('far');
+                        starEl.firstElementChild.classList.add('fas');
+                    } else {
+                        starEl.firstElementChild.classList.remove('fas');
+                        starEl.firstElementChild.classList.add('far');
+                    }
+                }
+            });
+        }
+    
+        // Get all star rating elements
+        const ratingEls = document.querySelectorAll('.star-rating');
+        ratingEls.forEach(ratingEl => {
+            // Get the initial rating from the data-rating attribute
+            const initialRating = parseInt(ratingEl.dataset.rating, 10);
+            updateStarRatingDisplay(ratingEl, initialRating);
+    
+            ratingEl.addEventListener('click', event => {
+                let target = event.target;
+                if (target.tagName === 'I') {
+                    target = target.parentElement;
+                }
+                if (target.tagName === 'LI') {
+                    const bookId = ratingEl.dataset.bookId;
+                    const rating = Array.from(ratingEl.children).indexOf(target) + 1;
+    
+                    fetch('/rate_book', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ bookId, rating })
+                    }).then(response => {
+                        if (response.ok) {
+                            updateStarRatingDisplay(ratingEl, rating);
+                        } else {
+                            // Show an error message to the user
+                            alert('Failed to update the rating. Please try again.');
+                        }
+                    }).catch(error => {
+                        console.error('Error:', error);
+                        // Show an error message to the user
+                        alert('An error occurred. Please try again.');
+                    });
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

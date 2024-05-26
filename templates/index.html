@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 id="welcome-text">Welcome to your library {{ username }}!</h1>
+    <span>
+        <a href="{{ url_for('my_library') }}" id="library-button">My Library</a>
+        <a href="{{ url_for('logout') }}" id="logout-button">Logout</a>
+    </span>
+    <form action="{{ url_for('search') }}" method="get">
+        <input type="text" name="q" placeholder="Search for a book">
+        <button type="submit">Search</button>
+    </form>
+    <div class="grid-container">
+        {% if results is not none %}
+            {% for result in results %}
+                <div class="grid-item">
+                    <img src="{{ result['volumeInfo']['imageLinks']['thumbnail'] if 'imageLinks' in result['volumeInfo'] else '/static/default_image.jpg' }}" alt="{{ result['volumeInfo']['title'] }}">
+                    <div class="book-info">
+                        <h2>{{ result['volumeInfo']['title'] }}</h2>
+                        <p id="book-author"><strong>Author:</strong> {{ ', '.join(result['volumeInfo']['authors']) }}</p>
+                        <p id="book-year"><strong>Year:</strong> {{ result['volumeInfo']['publishedDate'].split('-')[0] }}</p>
+                    </div>
+                    <div class="button-container">
+                        <form action="{{ url_for('add_to_library') }}" method="post">
+                            <input type="hidden" name="book_id" value="{{ result['id'] }}">
+                            <input type="hidden" name="book_title" value="{{ result['volumeInfo']['title'] }}">
+                            <input type="hidden" name="book_author" value="{{ ', '.join(result['volumeInfo']['authors']) }}">
+                            <input type="hidden" name="book_year" value="{{ result['volumeInfo']['publishedDate'].split('-')[0] }}">
+                            <input type="hidden" name="book_image_url" value="{{ result['volumeInfo']['imageLinks']['thumbnail'] if 'imageLinks' in result['volumeInfo'] else '/static/default_image.jpg' }}">
+                            <button type="submit">Add to library</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
