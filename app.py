@@ -157,14 +157,11 @@ def my_library():
 @app.route('/update_status/<book_id>', methods=['POST'])
 @login_required
 def update_status(book_id):
-    # Get the new status from the form data
     new_status = request.form.get('status')
 
-    # Find the UserBook record for the current user and the specified book
     user_book = UserBook.query.filter_by(user_id=current_user.id, book_id=book_id).first()
 
     if user_book and new_status in ['Read', 'Unread', 'Reading']:
-        # Update the status
         user_book.status = new_status
         db.session.commit()
         return redirect(url_for('my_library'))
@@ -188,7 +185,6 @@ def rate_book():
 @app.route('/delete_book/<book_id>', methods=['POST'])
 @login_required
 def delete_book(book_id):
-    # Find the UserBook record for the current user and the specified book
     user_book = UserBook.query.filter_by(user_id=current_user.id, book_id=book_id).first()
 
     if user_book:

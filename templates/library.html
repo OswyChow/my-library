@@ -52,10 +52,8 @@
             });
         }
     
-        // Get all star rating elements
         const ratingEls = document.querySelectorAll('.star-rating');
         ratingEls.forEach(ratingEl => {
-            // Get the initial rating from the data-rating attribute
             const initialRating = parseInt(ratingEl.dataset.rating, 10);
             updateStarRatingDisplay(ratingEl, initialRating);
     
@@ -78,12 +76,10 @@
                         if (response.ok) {
                             updateStarRatingDisplay(ratingEl, rating);
                         } else {
-                            // Show an error message to the user
                             alert('Failed to update the rating. Please try again.');
                         }
                     }).catch(error => {
                         console.error('Error:', error);
-                        // Show an error message to the user
                         alert('An error occurred. Please try again.');
                     });
                 }
